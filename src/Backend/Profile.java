@@ -5,6 +5,7 @@
  */
 package Backend;
 
+import java.util.Objects;
 import javafx.scene.image.Image;
 
 /**
@@ -18,11 +19,15 @@ public class Profile {
     private int noOfWins;
     private int noOfLosses;
     private int winStreak;
-    private int rating;
-    
+    private double rating;
+      
     public Profile(String name){
+        this(name,null);
+    }
+    
+    public Profile(String name, Image m){
         this.name = name;
-//        this.dp = null;
+        this.dp = m;
     }
 
     /**
@@ -105,15 +110,35 @@ public class Profile {
     /**
      * @return the rating
      */
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
     /**
      * @param rating the rating to set
      */
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void addRating(double rating) {
+        this.rating += rating;
+    }
+    /**
+     * Compares 2 profiles
+     * @param b a profile of a player
+     * @return false if compared with an instance that is not profile, if otherwise returns true if both profiles and the same and false if otherwise
+     * 
+     */
+    @Override
+    public boolean equals(Object b){
+        if(b instanceof Profile)
+            return (this.name == null ? ((Profile)b).name == null : this.name.equals(((Profile)b).name)) && (this.noOfGames==((Profile) b).noOfGames);
+        
+        return false;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.name);
+        hash = 59 * hash + this.noOfGames;
+        return hash;
+    }
 }
